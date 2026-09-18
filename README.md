@@ -7,11 +7,13 @@ A free, self-paced learning platform about **Mochimo (MCM)**, the post-quantum r
 ## Learner flow
 
 ```mermaid
-flowchart TD
-    A[1 · Learn Mochimo<br/>12 lessons across 4 levels] --> B[2 · Finalize tasks<br/>comprehension questions, labs<br/>and the 10-question final exam]
-    B --> C[3 · Follow Mochimo social media<br/>X · Telegram · Discord · TikTok<br/>Instagram · 2 YouTube channels]
-    C --> D[4 · Get your certificate<br/>download the PNG]
-    D --> E[5 · Share it in Mochimo Discord<br/>and get some MCM coin<br/>from the community]
+flowchart LR
+    A["<b>1 · Learn Mochimo</b><br/>12 lessons<br/>4 levels"]
+    B["<b>2 · Finalize tasks</b><br/>quizzes, labs<br/>exam 8/10"]
+    C["<b>3 · Follow socials</b><br/>7 Mochimo<br/>channels"]
+    D["<b>4 · Get certificate</b><br/>download<br/>the PNG"]
+    E["<b>5 · Share on Discord</b><br/>get MCM from<br/>the community"]
+    A --> B --> C --> D --> E
 ```
 
 1. **Learn Mochimo.** Work through the lessons, from what a ledger is up to self-custody, plus the optional builder track. Progress saves in your browser as you go.
