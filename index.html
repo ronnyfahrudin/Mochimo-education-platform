@@ -198,6 +198,9 @@ pre{font-family:var(--mono);font-size:.85rem;background:var(--bg);border:1px sol
 .cert .who{font-family:var(--display);font-size:1.6rem;border-bottom:1px solid var(--line);display:inline-block;min-width:60%;padding:.3rem 1rem;margin:.5rem 0 1rem}
 .locked{color:var(--muted)}
 
+.cert-reward{margin-top:1.5rem;padding:1.2rem 1.4rem;border:1px solid var(--green);border-radius:12px;background:var(--green-soft);display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cert-reward p{margin:0}
+
 .social-list{list-style:none;padding:0;margin:1.2rem 0}
 .social-item{border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin:.7rem 0;background:var(--bg)}
 .social-item.ok{border-color:var(--green)}
@@ -754,7 +757,9 @@ function viewCertificate(){
     <div class="cert-controls"><div><label for="nm">Name on certificate</label><input class="field" id="nm" type="text" maxlength="40" value="${esc(state.name)}" placeholder="Your full name"></div>
     <button class="btn" id="dlCert" type="button" hidden>Download PNG</button></div>
     <p class="note" id="dlNote" aria-live="polite"></p>
-    <canvas id="certCanvas" width="2000" height="1414" role="img" aria-label="Mochimo Academy certificate of completion"></canvas></div>`;
+    <canvas id="certCanvas" width="2000" height="1414" role="img" aria-label="Mochimo Academy certificate of completion"></canvas>
+    <div class="cert-reward"><p><b>Share your certificate into Mochimo Discord to get some reward in MCM coin.</b></p>
+    <a class="btn" href="https://discord.mochimo.org/" target="_blank" rel="noopener noreferrer">Open Mochimo Discord</a></div></div>`;
   var cv=document.getElementById('certCanvas');
   function redraw(){drawCertificate(cv,{name:state.name,score:state.exam.score,date:state.exam.date,id:state.exam.id})}
   var t;document.getElementById('nm').oninput=function(e){state.name=e.target.value;save();clearTimeout(t);t=setTimeout(redraw,120)};
