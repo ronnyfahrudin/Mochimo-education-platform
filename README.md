@@ -6,15 +6,7 @@ A free, self-paced learning platform about **Mochimo (MCM)**, the post-quantum r
 
 ## Learner flow
 
-```mermaid
-flowchart LR
-    A["<b>1 · Learn Mochimo</b><br/>12 lessons<br/>4 levels"]
-    B["<b>2 · Finalize tasks</b><br/>quizzes, labs<br/>exam 8/10"]
-    C["<b>3 · Follow socials</b><br/>7 Mochimo<br/>channels"]
-    D["<b>4 · Get certificate</b><br/>download<br/>the PNG"]
-    E["<b>5 · Share on Discord</b><br/>get MCM from<br/>the community"]
-    A --> B --> C --> D --> E
-```
+![Mochimo Academy learner flow](assets/learner-flow.png)
 
 1. **Learn Mochimo.** Work through the lessons, from what a ledger is up to self-custody, plus the optional builder track. Progress saves in your browser as you go.
 2. **Finalize the tasks.** Answer the comprehension questions, try the interactive labs, then take the 10-question final exam. You need **8 of 10** to pass; retakes are unlimited.
