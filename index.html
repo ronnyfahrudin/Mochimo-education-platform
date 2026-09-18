@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mochimo Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-dark:#1D2B2E; --brand-mint:#15DC97;
+  --bg:#EDF1F4; --paper:#FFFFFF; --ink:#18212E; --muted:#56627A; --line:#CBD4DE;
+  --violet:#4B36C7; --violet-soft:#E6E2FB; --amber:#B86E00; --amber-soft:#FDF0DA;
+  --green:#1C7C54; --green-soft:#DDF3E8; --red:#B3261E; --red-soft:#FBE3E1;
+  --l1:#2F7FB8; --l2:#4B36C7; --l3:#1C7C54; --l4:#B86E00;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10151D; --paper:#18202B; --ink:#E7ECF3; --muted:#9AA7BA; --line:#2C3747;
+    --violet:#A597FF; --violet-soft:#262045; --amber:#F2B45A; --amber-soft:#33270F;
+    --green:#5BD39C; --green-soft:#12301F; --red:#FF8A80; --red-soft:#3A1715;
+    --l1:#6DB6E8; --l2:#A597FF; --l3:#5BD39C; --l4:#F2B45A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10151D; --paper:#18202B; --ink:#E7ECF3; --muted:#9AA7BA; --line:#2C3747;
+  --violet:#A597FF; --violet-soft:#262045; --amber:#F2B45A; --amber-soft:#33270F;
+  --green:#5BD39C; --green-soft:#12301F; --red:#FF8A80; --red-soft:#3A1715;
+  --l1:#6DB6E8; --l2:#A597FF; --l3:#5BD39C; --l4:#F2B45A;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65}
+a{color:var(--violet)}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px;border-radius:4px}
+img,svg{max-width:100%}
+button{font:inherit;cursor:pointer}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:10;background:var(--brand-dark);border-bottom:1px solid #2E3E42}
+.topbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;padding:.7rem 1.5rem}
+.logo{font-family:var(--display);font-weight:800;font-size:1.15rem;text-decoration:none;color:#fff;display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+.logo-mark{width:2rem;height:2rem;border-radius:50%;display:block}
+.topnav{display:flex;gap:.25rem;flex:1;overflow-x:auto}
+.topnav a{text-decoration:none;color:#A9BCC0;padding:.4rem .75rem;border-radius:8px;white-space:nowrap;font-size:.97rem}
+.topnav a:hover{color:#fff;background:#2A3B3F}
+.topnav a.active{color:var(--brand-mint);background:#2A3B3F;font-weight:700}
+.top-progress{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#A9BCC0;white-space:nowrap}
+.ring{--p:0;width:1.9rem;height:1.9rem;border-radius:50%;background:conic-gradient(var(--brand-mint) calc(var(--p)*1%),#3A4B4F 0)}
+.ring::after{content:"";display:block;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--brand-dark);margin:.3rem}
+.theme-btn{background:none;border:1px solid #3A4B4F;color:#A9BCC0;border-radius:8px;padding:.35rem .6rem;font-size:.85rem}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.5rem 5rem}
+
+/* home */
+.home-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:3rem;align-items:center;padding:4rem 0 3rem}
+.home-hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,5vw,3.8rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 1.2rem}
+.home-hero p{font-size:1.15rem;color:var(--muted);max-width:34rem;margin:0 0 1.5rem}
+.btn{display:inline-block;background:var(--brand-dark);color:var(--brand-mint);text-decoration:none;border:0;border-radius:10px;padding:.75rem 1.2rem;font-weight:700}
+.btn.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}
+.btn-row{display:flex;flex-wrap:wrap;gap:.6rem}
+.hero-ladder{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:1.5rem}
+.hero-ladder p{margin:0 0 .8rem;font-size:.95rem;color:var(--muted)}
+.hl-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.hl-grid span{aspect-ratio:1;border-radius:6px;background:var(--bg);border:1px solid var(--line);transition:background .4s,border-color .4s}
+.hl-grid span.on{background:var(--violet);border-color:var(--violet)}
+.hl-grid span.top{background:var(--green);border-color:var(--green)}
+.hl-cap{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:.5rem}
+
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 3.5rem}
+.facts div{background:var(--paper);padding:1.1rem 1.25rem}
+.facts b{display:block;font-family:var(--display);font-size:1.25rem}
+.facts span{color:var(--muted);font-size:.92rem}
+
+.section-title{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,3vw,2.2rem);letter-spacing:-.01em;margin:0 0 .4rem}
+.section-sub{color:var(--muted);margin:0 0 1.75rem;max-width:40rem}
+
+/* curriculum */
+.levels{display:grid;gap:1.25rem}
+.level{background:var(--paper);border:1px solid var(--line);border-radius:16px;display:grid;grid-template-columns:260px minmax(0,1fr);overflow:hidden}
+.level-head{padding:1.5rem;border-right:1px solid var(--line);position:relative}
+.level-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--lc)}
+.level-tag{font-family:var(--display);font-weight:700;color:var(--lc);font-size:.95rem;margin:0}
+.level-head h3{font-family:var(--display);font-weight:800;font-size:1.45rem;line-height:1.15;margin:.2rem 0 .5rem}
+.level-head p{color:var(--muted);font-size:.95rem;margin:0 0 .8rem}
+.level-meta{font-size:.85rem;color:var(--muted)}
+.level-bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:.8rem}
+.level-bar i{display:block;height:100%;background:var(--lc);width:0}
+.level-lessons{list-style:none;margin:0;padding:.5rem}
+.level-lessons a{display:grid;grid-template-columns:2.2rem 1fr auto;gap:.75rem;align-items:center;padding:.7rem .8rem;border-radius:10px;text-decoration:none;color:var(--ink)}
+.level-lessons a:hover{background:var(--bg)}
+.lnum{width:2rem;height:2rem;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:.85rem;color:var(--muted)}
+.done .lnum{background:var(--green);border-color:var(--green);color:var(--paper)}
+.ltitle b{display:block;font-weight:700;line-height:1.3}
+.ltitle span{font-size:.88rem;color:var(--muted)}
+.lmin{font-size:.85rem;color:var(--muted);white-space:nowrap}
+.capstone{margin-top:1.25rem;background:var(--brand-dark);color:#fff;border-radius:16px;padding:1.75rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.capstone h3{font-family:var(--display);font-size:1.4rem;margin:0 0 .25rem}
+.capstone p{margin:0;opacity:.8;max-width:36rem}
+.capstone .btn{background:var(--brand-mint);color:var(--brand-dark)}
+.hero-logo{width:84px;height:84px;border-radius:50%;display:block;margin-bottom:1.25rem}
+.cert-logo{width:88px;height:88px;border-radius:50%;display:block;margin:0 auto 1rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn:not(.ghost){background:var(--brand-mint);color:var(--brand-dark)}}
+:root[data-theme="dark"] .btn:not(.ghost){background:var(--brand-mint);color:var(--brand-dark)}
+
+/* lesson view */
+.lesson-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:2.5rem;padding-top:2rem}
+.side{position:sticky;top:5rem;align-self:start}
+.side .level-tag{margin-bottom:.4rem}
+.side ol{list-style:none;padding:0;margin:0}
+.side a{display:grid;grid-template-columns:1.8rem 1fr;gap:.5rem;align-items:center;padding:.45rem .5rem;border-radius:8px;text-decoration:none;color:var(--ink);font-size:.93rem;line-height:1.3}
+.side a .lnum{width:1.6rem;height:1.6rem;font-size:.75rem}
+.side a.current{background:var(--paper);font-weight:700}
+.side a:hover{background:var(--paper)}
+.side-back{display:inline-block;margin-bottom:1rem;font-size:.9rem}
+article.lesson{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:2.5rem;max-width:50rem}
+.crumb{font-size:.9rem;color:var(--muted);margin:0}
+.crumb b{color:var(--lc)}
+.lesson h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.5vw,2.4rem);line-height:1.1;letter-spacing:-.01em;margin:.3rem 0 .8rem}
+.objectives{background:var(--bg);border-radius:12px;padding:1rem 1.25rem;margin:0 0 1.5rem}
+.objectives p{margin:0 0 .3rem;font-weight:700}
+.objectives ul{margin:0;padding-left:1.2rem}
+.lesson h2{font-family:var(--display);font-weight:700;font-size:1.25rem;margin:2rem 0 .4rem}
+.lesson p,.lesson li{max-width:42rem}
+.analogy,.warn,.danger{padding:.9rem 1.1rem;border-radius:0 10px 10px 0;margin:1.25rem 0}
+.analogy{border-left:4px solid var(--violet);background:var(--violet-soft)}
+.warn{border-left:4px solid var(--amber);background:var(--amber-soft)}
+.danger{border-left:4px solid var(--red);background:var(--red-soft)}
+.analogy p,.warn p,.danger p{margin:.15rem 0}
+.table-wrap{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem;min-width:30rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:700}
+ol.steps{padding-left:1.3rem}
+ol.steps li{margin-bottom:.6rem;padding-left:.3rem}
+code{font-family:var(--mono);font-size:.88em;background:var(--bg);padding:.1rem .35rem;border-radius:4px}
+pre{font-family:var(--mono);font-size:.85rem;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:1rem;overflow-x:auto;line-height:1.5}
+.lab{border:1.5px dashed var(--line);border-radius:12px;padding:1.25rem;margin:1.25rem 0}
+.lab label{font-weight:700;display:block;margin-bottom:.35rem}
+.lab input[type=text],.field{width:100%;font:inherit;padding:.6rem .75rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.hash-out{font-family:var(--mono);font-size:.85rem;word-break:break-all;background:var(--bg);padding:.6rem .75rem;border-radius:8px;margin-top:.6rem}
+.note{margin:.6rem 0 0;font-size:.88rem;color:var(--muted)}
+.ladder-controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.ladder-controls input[type=range]{width:100%;accent-color:var(--violet)}
+.reuse{display:flex!important;gap:.5rem;align-items:center;font-weight:400!important;margin-top:.3rem}
+.ladder{display:grid;grid-template-columns:repeat(16,1fr);gap:4px}
+.rung{aspect-ratio:1;border-radius:6px;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-size:.72rem;color:var(--muted)}
+.rung.secret{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rung.public{background:var(--green);color:var(--paper);border-color:var(--green)}
+.rung.known{background:var(--violet-soft);border-color:var(--violet);color:var(--violet)}
+.rung.leak{background:var(--red);border-color:var(--red);color:#fff}
+.ladder-axis{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:.3rem}
+.legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.85rem;margin:.8rem 0 0}
+.legend b{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.3rem}
+.verdict{margin:.9rem 0 0;font-weight:700}
+.conv{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem;align-items:end}
+.conv span{padding-bottom:.6rem;color:var(--muted)}
+
+.quiz{margin-top:2.25rem;border-top:1px solid var(--line);padding-top:1.25rem}
+.quiz h2{margin-top:0}
+.q{margin:0 0 1.25rem}
+.q > p{font-weight:700;margin:0 0 .5rem}
+.opts{display:grid;gap:.4rem}
+.opts button{text-align:left;font-size:.97rem;padding:.6rem .85rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.opts button:hover{border-color:var(--violet)}
+.opts button.right{background:var(--green-soft);border-color:var(--green)}
+.opts button.wrong{background:var(--red-soft);border-color:var(--red)}
+.feedback{font-size:.93rem;margin:.45rem 0 0;color:var(--muted)}
+.complete-msg{display:none;background:var(--green-soft);color:var(--green);font-weight:700;border-radius:10px;padding:.7rem 1rem;margin-top:.5rem}
+.complete-msg.show{display:block}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;max-width:50rem}
+.pager a{flex:1;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem}
+.pager a:hover{border-color:var(--violet)}
+.pager small{display:block;color:var(--muted)}
+.pager .next{text-align:right}
+.checklist{list-style:none;padding:0}
+.checklist label{display:flex;gap:.6rem;align-items:flex-start;cursor:pointer;margin:.4rem 0}
+.checklist input{margin-top:.35rem;accent-color:var(--green);width:1.05rem;height:1.05rem;flex:none}
+
+/* glossary */
+.gloss-search{max-width:28rem;margin-bottom:1.5rem}
+.gloss{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+.gloss div{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem}
+.gloss dt{font-family:var(--display);font-weight:700;font-size:1.05rem}
+.gloss dd{margin:.25rem 0 0;color:var(--muted);font-size:.96rem}
+.gloss dd a{font-size:.88rem}
+
+/* exam + certificate */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:2.5rem;max-width:50rem;margin-top:2rem}
+.score{font-family:var(--display);font-size:1.3rem;font-weight:800;margin:1rem 0 .3rem}
+.cert{border:3px double var(--ink);border-radius:6px;padding:3rem 2rem;text-align:center;background:var(--paper);margin-top:1.5rem}
+.cert small{color:var(--muted);display:block}
+.cert h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);margin:.6rem 0}
+.cert .who{font-family:var(--display);font-size:1.6rem;border-bottom:1px solid var(--line);display:inline-block;min-width:60%;padding:.3rem 1rem;margin:.5rem 0 1rem}
+.locked{color:var(--muted)}
+
+.social-list{list-style:none;padding:0;margin:1.2rem 0}
+.social-item{border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin:.7rem 0;background:var(--bg)}
+.social-item.ok{border-color:var(--green)}
+.social-head{display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.social-head b{font-family:var(--display);display:block}
+.social-head span{color:var(--muted);font-size:.94rem}
+.social-verify{margin-top:.7rem}
+.social-verify label{font-weight:700;display:block;margin-bottom:.3rem}
+.social-verify .field{max-width:22rem}
+.social-check{display:flex;gap:.6rem;align-items:center;font-weight:400;cursor:pointer;margin:0}
+.social-check input{accent-color:var(--green);width:1.05rem;height:1.05rem;flex:none}
+.social-item.ok .social-head b::after{content:' \2713';color:var(--green)}
+.btn.disabled{opacity:.5;cursor:not-allowed}
+
+#app:focus{outline:none}
+.cert-page{padding-top:2.5rem}
+.cert-controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin-bottom:.5rem}
+.cert-controls>div{flex:1;min-width:15rem;max-width:26rem}
+.cert-controls label{font-weight:700;display:block;margin-bottom:.35rem}
+#certCanvas{display:block;width:100%;height:auto;border-radius:10px;margin-top:1rem;box-shadow:0 2px 0 var(--line)}
+footer.foot{max-width:1180px;margin:0 auto;padding:1.5rem;color:var(--muted);font-size:.88rem;border-top:1px solid var(--line)}
+
+@media (max-width:900px){
+  .home-hero{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0 2rem}
+  .facts{grid-template-columns:1fr 1fr}
+  .level{grid-template-columns:1fr}
+  .level-head{border-right:0;border-bottom:1px solid var(--line)}
+  .lesson-layout{grid-template-columns:1fr;gap:1rem}
+  .side{position:static}
+  .side ol{display:none}
+  article.lesson,.panel{padding:1.5rem 1.2rem}
+  .gloss{grid-template-columns:1fr}
+  .ladder-controls{grid-template-columns:1fr}
+  .ladder{gap:2px}.rung{font-size:.58rem;border-radius:4px}
+  .top-progress span{display:none}
+  .topbar-in{gap:.75rem;padding:.6rem 1rem}
+  .wrap{padding:0 1rem 4rem}
+}
+@media print{
+  .topbar,footer.foot,.no-print{display:none!important}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="logo" href="#/"><img class="logo-mark" src="data:image/jpeg;base64,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" alt="">Mochimo Academy</a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#/" data-nav="home">Home</a>
+      <a href="#/curriculum" data-nav="curriculum">Curriculum</a>
+      <a href="#/glossary" data-nav="glossary">Glossary</a>
+      <a href="#/exam" data-nav="exam">Final exam</a>
+      <a href="#/certificate" data-nav="certificate">Certificate</a>
+    </nav>
+    <div class="top-progress" title="Course progress"><div class="ring" id="ring"></div><span id="ringLabel">0%</span></div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">◐</button>
+  </div>
+</header>
+
+<div class="wrap" id="app" tabindex="-1"></div>
+
+<footer class="foot">Educational material only, not financial advice. Cryptocurrency is volatile, and self‑custody means you alone are responsible for your recovery phrase. Always verify links through <a href="https://mochimo.org" rel="noopener">mochimo.org</a>.</footer>
+
+<script>
+(function(){
+var LOGO='data:image/jpeg;base64,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';
+/* ---------- storage ---------- */
+var store={
+  get:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},
+  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+var state={done:store.get('mcm2-done')||{},exam:store.get('mcm2-exam')||null,name:store.get('mcm2-name')||'',checks:store.get('mcm2-checks')||[],social:store.get('mcm2-social')||{}};
+function save(){store.set('mcm2-done',state.done);store.set('mcm2-exam',state.exam);store.set('mcm2-name',state.name);store.set('mcm2-checks',state.checks);store.set('mcm2-social',state.social)}
+
+/* ---------- theme ---------- */
+var root=document.documentElement;
+var t=store.get('mcm-theme'); if(t) root.setAttribute('data-theme',t);
+document.getElementById('themeBtn').onclick=function(){
+  var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  var n=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',n); store.set('mcm-theme',n);
+};
+
+/* ---------- curriculum data ---------- */
+var LEVELS=[
+ {id:1,name:'Foundations',color:'var(--l1)',who:'For complete beginners',blurb:'What cryptocurrency is, how wallets work, and why quantum computers are a problem.'},
+ {id:2,name:'Inside Mochimo',color:'var(--l2)',who:'After Level 1',blurb:'How Mochimo’s hash‑based signatures, tags and network design keep coins safe.'},
+ {id:3,name:'Own your MCM',color:'var(--l3)',who:'Hands‑on',blurb:'Get MCM, set up the official wallet, and move coins into self‑custody.'},
+ {id:4,name:'Builder track',color:'var(--l4)',who:'Optional, technical',blurb:'Run a node, mine MCM, and read blockchain data through the Mesh API.'}
+];
+
+function Q(q,opts,a,ok,no){return{q:q,opts:opts,a:a,ok:ok,no:no}}
+
+var LESSONS=[
+/* ===== LEVEL 1 ===== */
+{id:1,level:1,min:8,title:'Money, ledgers and blockchains',sub:'The shared record behind every cryptocurrency',
+ obj:['Explain what a ledger is','Describe how blocks link into a chain','Know how Proof of Work mining adds blocks'],
+ body:`<p>Every kind of money needs a record of who owns what. Your bank keeps that record in its own database, and you trust the bank to keep it honest.</p>
+<p>A cryptocurrency replaces that single bank with a <strong>shared ledger</strong>: thousands of computers around the world keep a copy of the same record and agree on every change. Nobody owns it, nobody can quietly edit it, and it runs 24 hours a day.</p>
+<div class="analogy"><p><strong>Think of it like this:</strong> a village notebook that every villager holds a copy of. When Ani pays Budi, the whole village writes it down. If one person changes their copy, it no longer matches, so it gets ignored.</p></div>
+<h2>Why “blockchain”?</h2>
+<p>New transactions are grouped into a <strong>block</strong>. Each block contains a fingerprint (a <em>hash</em>, covered in Lesson 4) of the block before it, so the blocks form a <strong>chain</strong>. Changing an old block breaks every fingerprint after it, which makes tampering obvious.</p>
+<h2>Who adds the blocks?</h2>
+<p>In Mochimo, as in Bitcoin, blocks are added by <strong>miners</strong> through <strong>Proof of Work</strong>. Computers compete to solve a hard puzzle; the winner adds the next block and earns newly created coins. This is how new MCM enters circulation.</p>`,
+ quiz:[Q('Who keeps the record of balances in a cryptocurrency?',['One company that created the coin','Many computers that each hold a copy and agree on changes','The government'],1,'Right. The ledger is shared.','Not quite. There is no single keeper.'),
+       Q('Why is it hard to secretly change an old block?',['Each block contains the previous block’s fingerprint','Old blocks are deleted daily','Only developers can read old blocks'],0,'Correct. Linked fingerprints expose tampering.','Think about what links one block to the next.')]},
+{id:2,level:1,min:8,title:'Keys, wallets and signatures',sub:'What a wallet really holds',
+ obj:['Tell addresses and private keys apart','Understand the recovery phrase','Explain custodial versus self‑custody'],
+ body:`<p>A crypto wallet does not store coins. Coins always live on the shared ledger. Your wallet stores <strong>keys</strong>: secrets that prove you may move the coins recorded under your address.</p>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>What it is</th><th>Share it?</th></tr></thead><tbody>
+<tr><td>Address</td><td>Where people send you coins, like an account number</td><td>Yes</td></tr>
+<tr><td>Private key</td><td>The secret that lets you spend</td><td>Never</td></tr>
+<tr><td>Recovery phrase</td><td>Words that can rebuild all your keys</td><td>Never, with anyone</td></tr>
+<tr><td>Signature</td><td>Proof, made with your key, that you approved a payment</td><td>Created automatically when you send</td></tr></tbody></table></div>
+<div class="analogy"><p><strong>Think of it like this:</strong> your address is a glass mailbox anyone can drop money into. The private key is the only key that opens it.</p></div>
+<h2>Custodial versus self‑custody</h2>
+<p>Coins on an exchange are held with the exchange’s keys; you hold a promise. If the exchange is hacked or freezes withdrawals, you can lose access. Holding coins in a wallet where <em>you</em> keep the recovery phrase is <strong>self‑custody</strong>, the goal of Level 3.</p>
+<div class="danger"><p><strong>Never break this rule:</strong> no real support agent, admin or developer will ever ask for your recovery phrase.</p></div>`,
+ quiz:[Q('What does a crypto wallet store?',['The coins themselves','A copy of the whole blockchain','The keys that let you move coins on the ledger'],2,'Exactly.','Coins never leave the ledger.'),
+       Q('What is safe to share with someone paying you?',['Your address','Your recovery phrase','Your private key'],0,'Right.','No. That would let them take your coins.')]},
+{id:3,level:1,min:10,title:'Why quantum computers are a threat',sub:'The problem Mochimo was built to solve',
+ obj:['Know why ECDSA is vulnerable','Understand “harvest now, decrypt later”','See why hash functions hold up better'],
+ body:`<p>Bitcoin, Ethereum and most blockchains sign transactions with <strong>ECDSA</strong>. Its safety rests on one maths problem: recovering a private key from a public key would take ordinary computers longer than the age of the universe.</p>
+<p>A large enough <strong>quantum computer</strong> running <strong>Shor’s algorithm</strong> solves exactly that problem. An attacker who sees your public key could calculate your private key and spend your coins.</p>
+<h2>When is a public key exposed?</h2>
+<p>On most ECDSA chains your public key becomes visible on the ledger once you spend from an address. Anyone can copy it and wait. This is called <strong>harvest now, decrypt later</strong>.</p>
+<div class="warn"><p><strong>Keep it realistic:</strong> no quantum computer today can break ECDSA, and experts disagree on when one will. But migrating a whole blockchain takes years, so waiting for proof may be too late.</p></div>
+<h2>What about hashes?</h2>
+<p>Hash functions are much tougher. The best known quantum attack on them, Grover’s algorithm, only weakens them, and strong hashes keep a large safety margin. Mochimo builds its signatures on this.</p>`,
+ quiz:[Q('What does Shor’s algorithm threaten?',['Miners’ internet connections','Signature schemes like ECDSA','Coin prices'],1,'Correct.','It is a maths attack on specific cryptography.'),
+       Q('What does “harvest now, decrypt later” mean?',['Mine now, sell later','Quantum computers steal coins today','Collect public keys now and break them later'],2,'Yes.','Think about what attackers can save today.')]},
+/* ===== LEVEL 2 ===== */
+{id:4,level:2,min:15,title:'Hashes and WOTS+ signatures',sub:'The quantum‑resistant core of Mochimo',demo:'wots',
+ obj:['See how a hash behaves','Understand a Winternitz hash ladder','Explain why WOTS+ keys are one‑time'],
+ body:`<p>Instead of ECDSA, Mochimo signs every transaction with <strong>WOTS+</strong> (Winternitz One‑Time Signature Plus), built only from hash functions. Mochimo has used it since its first block in 2018 rather than retrofitting it later.</p>
+<h2>Try a hash</h2>
+<p>A hash turns any input into a fixed‑length fingerprint. Easy forward, practically impossible to reverse. Change one letter and the whole output changes.</p>
+<div class="lab"><label for="hashIn">Type anything</label><input type="text" id="hashIn" value="Mochimo" autocomplete="off"><div class="hash-out" id="hashOut" aria-live="polite">…</div><p class="note">This demo runs SHA‑256 in your browser. Nothing is sent anywhere.</p></div>
+<h2>The hash ladder</h2>
+<p>WOTS+ starts from a secret and hashes it repeatedly, forming a ladder. The <strong>top rung</strong> is part of your public key. To sign, the wallet reveals the rung matching part of the message. Anyone can verify by hashing upward to the top, but nobody can go <em>down</em>.</p>
+<p>Sign one message below, then tick “reuse the key” and sign a second one.</p>
+<div class="lab">
+ <div class="ladder-controls">
+  <div><label for="d1">Message 1 reveals rung <span id="d1v">9</span></label><input type="range" id="d1" min="0" max="15" value="9"></div>
+  <div><label for="d2">Message 2 reveals rung <span id="d2v">4</span></label><input type="range" id="d2" min="0" max="15" value="4" disabled><label class="reuse"><input type="checkbox" id="reuse"> Reuse the same key</label></div>
+ </div>
+ <div class="ladder" id="ladder" aria-hidden="true"></div>
+ <div class="ladder-axis"><span>secret</span><span>public key</span></div>
+ <div class="legend"><span><b style="background:var(--ink)"></b>Secret</span><span><b style="background:var(--violet-soft);border:1px solid var(--violet)"></b>Attacker can compute</span><span><b style="background:var(--red)"></b>Leaked by reuse</span><span><b style="background:var(--green)"></b>Public</span></div>
+ <p class="verdict" id="verdict" aria-live="polite"></p>
+</div>
+<p>A built‑in checksum stops attackers abusing rungs above what you revealed. But a second signature with the same key can reveal a lower rung, and forgery becomes possible. Hence Mochimo’s rule: <strong>every spend uses a fresh key</strong>.</p>`,
+ quiz:[Q('What is WOTS+ built from?',['Elliptic curves','Hash functions','Server‑side passwords'],1,'Correct.','Mochimo avoids elliptic curves entirely.'),
+       Q('What happens if a WOTS+ key signs twice?',['Nothing, it is fine','It can leak enough secret material to allow forgery','The coins double'],1,'Exactly. One key, one signature.','Revisit the ladder demo with reuse ticked.')]},
+{id:5,level:2,min:10,title:'Tags, addresses and key rotation',sub:'A stable address on top of one‑time keys',
+ obj:['Understand what a tag is','Read a Mochimo v3 address','Know why one account should live on one device'],
+ body:`<p>If every spend needs a new key, how do you give people a permanent address? Mochimo answers with the <strong>tag</strong>: a permanent account identifier that stays the same while the one‑time keys behind it rotate.</p>
+<h2>What happens when you send</h2>
+<ol class="steps"><li>Your wallet signs with the account’s current one‑time key.</li><li>The payment goes to the recipient.</li><li>Your remaining balance, the <strong>change</strong>, moves to a freshly generated key under the same tag.</li><li>The old key is never used again.</li></ol>
+<p>You never manage this by hand; the wallet does it automatically.</p>
+<h2>Mochimo v3 addresses</h2>
+<p>Since the v3 hard fork, an address combines the tag with a hash of the current key. For everyday use it is shown in <strong>Base58</strong>, a compact text form with a built‑in checksum that catches typos. Always copy and paste addresses instead of retyping them.</p>
+<div class="warn"><p><strong>Practical rule:</strong> use one wallet app per account at a time. Spending from the same account on two devices, or from an old restored backup, risks signing twice with the same one‑time key.</p></div>`,
+ quiz:[Q('What stays the same when your one‑time keys rotate?',['The tag','The signature','The block number'],0,'Right. The tag is your permanent identity.','Think about what makes the address stable.'),
+       Q('Why avoid spending from one account on two devices at once?',['It costs double fees','Both might sign with the same one‑time key','The wallet will uninstall'],1,'Correct.','Recall the one‑key, one‑signature rule.')]},
+{id:6,level:2,min:10,title:'The Mochimo network',sub:'Consensus, ChainCollapse and supply',demo:'units',
+ obj:['Recall Mochimo’s key facts','Understand ChainCollapse at a high level','Convert MCM and nanoMCM'],
+ body:`<div class="table-wrap"><table><tbody>
+<tr><th>Launched</th><td>Genesis block on 25 June 2018</td></tr>
+<tr><th>Fundraising</th><td>No ICO or presale; coins enter circulation through mining</td></tr>
+<tr><th>Signatures</th><td>WOTS+ (hash‑based, post‑quantum) since the first block</td></tr>
+<tr><th>Consensus</th><td>Proof of Work</td></tr>
+<tr><th>Codebase</th><td>Written in C, open source on GitHub</td></tr>
+<tr><th>Current version</th><td>v3, introduced by a 2025 hard fork together with a browser extension wallet</td></tr></tbody></table></div>
+<h2>ChainCollapse</h2>
+<p>Blockchains grow forever, which makes running a node expensive over time. Mochimo periodically compresses history into a summary of current balances, so new nodes can join by downloading that summary and recent blocks instead of every block since 2018.</p>
+<h2>Supply schedule</h2>
+<p>Block rewards follow a phased schedule. From around block 900,000 (expected near December 2026), the reward becomes a fixed 1.25 MCM per block, a slow, capped release over the following decades.</p>
+<h2>Units</h2>
+<p>1 MCM = 1,000,000,000 nanoMCM. Some tools and APIs show amounts in nanoMCM, so it helps to convert quickly.</p>
+<div class="lab"><div class="conv"><div><label for="uMcm">MCM</label><input class="field" type="text" id="uMcm" value="2.5" inputmode="decimal"></div><span>=</span><div><label for="uNano">nanoMCM</label><input class="field" type="text" id="uNano" inputmode="numeric"></div></div></div>
+<div class="warn"><p><strong>Before buying:</strong> MCM is a small‑cap coin with low trading volume. Prices move sharply and large amounts can be hard to sell. This is education, not financial advice.</p></div>`,
+ quiz:[Q('How did MCM first enter circulation?',['An ICO','An airdrop','Mining rewards, with no ICO'],2,'Right.','Mochimo had no presale.'),
+       Q('What problem does ChainCollapse address?',['Quantum attacks','Ever‑growing chain size for nodes','Exchange listings'],1,'Correct.','Think about storage over time.')]},
+/* ===== LEVEL 3 ===== */
+{id:7,level:3,min:8,title:'Getting your first MCM',sub:'Buy, mine or receive, safely',
+ obj:['Find current trading venues','Know the three ways to get MCM','Recognise common scams'],
+ body:`<p>Set up your wallet first (Lesson 8) so you have a receiving address ready.</p>
+<h2>Route A: buy on an exchange</h2>
+<ol class="steps"><li>Find where MCM trades today on its <strong>Markets</strong> page on CoinMarketCap or CoinGecko. Listings change, so use a live source, not an old article.</li>
+<li>Open the exchange by typing its address yourself. Create an account and enable two‑factor authentication.</li>
+<li>Deposit a major coin such as USDT and buy on the MCM pair. Use limit orders, as the order book is thin.</li>
+<li>Withdraw to your own wallet (Lesson 9).</li></ol>
+<h2>Route B: mine it</h2>
+<p>With suitable hardware you can mine and set your own address as the payout. Level 4 covers this.</p>
+<h2>Route C: receive it</h2>
+<p>Friends, community rewards and payments can go straight to your address. Share only the address.</p>
+<div class="danger"><p><strong>Ignore these:</strong> “support” in direct messages, giveaways that ask you to send first, fake wallet apps, and any site that asks you to “validate” or “sync” your wallet with your recovery phrase.</p></div>`,
+ quiz:[Q('Most reliable way to find where MCM trades today?',['A live Markets page on a price tracker','A years‑old blog post','A stranger’s DM'],0,'Correct.','Listings change; use a live source.'),
+       Q('Someone in DMs offers to “sync” your wallet if you share your phrase. This is:',['Official support','A scam','A normal upgrade step'],1,'Right. Always a scam.','No legitimate party ever needs your phrase.')]},
+{id:8,level:3,min:12,title:'Set up the Mochimo Wallet',sub:'Create a wallet you fully control',
+ obj:['Install the official extension safely','Back up your recovery phrase correctly','Import an old Mojo wallet'],
+ body:`<p>The official wallet for Mochimo v3 is the <strong>Mochimo Wallet</strong> browser extension for Chromium‑based browsers such as Chrome and Brave.</p>
+<ol class="steps">
+<li><strong>Install from the official listing only:</strong> <a href="https://chromewebstore.google.com/detail/mochimo-wallet/fkogefgjocnflhankmffnibdofdiiiho" rel="noopener">Mochimo Wallet on the Chrome Web Store</a>. Check the publisher before adding it.</li>
+<li><strong>Pin the extension</strong> via the puzzle‑piece icon in your toolbar.</li>
+<li><strong>Create a new wallet</strong> and set a strong password. It unlocks the wallet on this device only.</li>
+<li><strong>Write the recovery phrase on paper</strong>, in order. No screenshots, email or cloud notes.</li>
+<li><strong>Confirm the phrase</strong> when prompted.</li>
+<li><strong>Store the paper privately</strong>, ideally in two separate places.</li>
+<li><strong>Copy your receive address</strong> from the wallet.</li></ol>
+<h2>Coming from the old Mojo wallet?</h2>
+<p>Add an account, choose <strong>Import MCM file</strong>, select your <code>.mcm</code> backup, and enter your old Mojo password. Then compare the balance with your records.</p>
+<div class="warn"><p><strong>Password versus phrase:</strong> a forgotten password is recoverable with the phrase. Lose both the phrase and the device and the coins are gone for good.</p></div>`,
+ quiz:[Q('Best way to back up a recovery phrase?',['Phone screenshot','Email to yourself','Paper, stored privately in two places'],2,'Correct.','Anything online can be stolen remotely.'),
+       Q('How do you avoid a fake wallet?',['Use the official store listing and check the publisher','Click the first search ad','Ask in a public chat'],0,'Right.','Ads and chat links spread fakes.')]},
+{id:9,level:3,min:10,title:'Move MCM into your wallet',sub:'Your first self‑custody transfer',demo:'checklist',
+ obj:['Withdraw safely with a test transfer','Send MCM later','Complete the safety checklist'],
+ body:`<ol class="steps">
+<li><strong>Copy your address</strong> with the wallet’s copy button.</li>
+<li><strong>Paste it into the exchange’s MCM withdrawal page</strong> and check the first and last characters match.</li>
+<li><strong>Send a small test amount</strong> and wait for it to arrive.</li>
+<li><strong>Wait for confirmations.</strong> Each Mochimo block takes a few minutes, and exchanges may wait for several.</li>
+<li><strong>Send the rest</strong> once the test succeeds.</li>
+<li><strong>Check your balance.</strong> You now hold MCM in self‑custody, protected by quantum‑resistant signatures.</li></ol>
+<h2>Sending later</h2>
+<p>Choose Send, paste the recipient address, enter the amount and confirm. Key rotation happens automatically; your job is to protect the recovery phrase.</p>
+<h2>Safety checklist</h2>
+<ul class="checklist" id="checklist">
+<li><label><input type="checkbox"> My recovery phrase is on paper, not on any device</label></li>
+<li><label><input type="checkbox"> I installed the wallet from the official store listing</label></li>
+<li><label><input type="checkbox"> I sent a small test transaction first</label></li>
+<li><label><input type="checkbox"> I use this account on one device at a time</label></li>
+<li><label><input type="checkbox"> I will never share my recovery phrase</label></li></ul>`,
+ quiz:[Q('Why send a test amount first?',['It lowers the price','A wrong address costs only a little','The network requires it'],1,'Exactly. Transfers can’t be reversed.','Think about a mistyped address.'),
+       Q('Who can reverse a transfer sent to the wrong address?',['The exchange','Mochimo developers','Nobody'],2,'Correct. Double‑check before sending.','Blockchain transfers are final.')]},
+/* ===== LEVEL 4 ===== */
+{id:10,level:4,min:15,title:'Run a Mochimo node',sub:'Help relay and verify the network',
+ obj:['Know what a node does','Install a relay node on Ubuntu','Understand node versus miner roles'],
+ body:`<p>A <strong>node</strong> keeps a copy of the ledger, checks every transaction and block against the rules, and shares them with peers. More independent nodes make the network harder to censor or attack.</p>
+<h2>Requirements</h2>
+<p>An always‑on Linux machine (Ubuntu is the documented target), build tools and git, and a public IP with the Mochimo port reachable if you want other peers and miners to connect.</p>
+<h2>Install a relay node</h2>
+<p>A relay node verifies and forwards data without mining. The official wiki’s steps:</p>
+<pre>sudo apt-get install -y build-essential git-all
+git clone https://github.com/mochimodev/mochimo ~/mochimo
+make -C ~/mochimo version
+make -C ~/mochimo install-mochimo
+cd ~/mochimo/bin
+./gomochi -n        # -n = relay only, no mining</pre>
+<p>To update later, run <code>git -C ~/mochimo pull</code> and reinstall. The repository also ships a setup script that provisions a node as a system service; see the <a href="https://github.com/mochimodev/mochimo" rel="noopener">official README</a> for current options.</p>
+<div class="warn"><p><strong>Always check the official repository</strong> before running commands. Build steps change between releases, and copied commands from old guides may be out of date.</p></div>`,
+ quiz:[Q('What does the -n flag do for gomochi?',['Runs a relay node without mining','Enables quantum mode','Deletes the ledger'],0,'Correct.','Check the comment in the command block.'),
+       Q('Why do more independent nodes help?',['They raise the coin price','They make the network harder to censor or attack','They speed up exchanges'],1,'Right.','Think about decentralisation.')]},
+{id:11,level:4,min:15,title:'Mine MCM',sub:'Earn rewards by securing the chain',
+ obj:['Know the mining hardware requirements','Build the GPU miner','Point rewards to your own address'],
+ body:`<p>Mining adds new blocks through Proof of Work and pays the winner a block reward. The official GPU miner is built for <strong>NVIDIA</strong> cards on <strong>Linux</strong> and connects to a Mochimo node.</p>
+<h2>What you need</h2>
+<ul><li>An NVIDIA GPU (10‑series or newer recommended)</li><li>Linux with git, make and a CUDA Toolkit that matches your GPU</li><li>A running, publicly reachable Mochimo node (Lesson 10)</li><li>Your Mochimo account tag or address from the wallet (Lesson 8)</li></ul>
+<h2>Build and run</h2>
+<pre>git clone https://github.com/mochimodev/mochimo.git
+make -C mochimo/ miner
+# older 10-series cards may need the architecture flag:
+# make -C mochimo/ miner NVCCARGS=-arch=sm_61
+mochimo/bin/gpuminer --help
+mochimo/bin/gpuminer -N &lt;YOUR_NODE_IP&gt; -m &lt;YOUR_ACCOUNT_TAG&gt;</pre>
+<p>Replace <code>&lt;YOUR_NODE_IP&gt;</code> with your node’s IP and <code>&lt;YOUR_ACCOUNT_TAG&gt;</code> with your address, so rewards go to the wallet you control.</p>
+<div class="warn"><p><strong>Count the cost:</strong> electricity, hardware wear and cooling are real expenses. Compare them with the current block reward and network difficulty before investing in rigs.</p></div>`,
+ quiz:[Q('Where do mining rewards go?',['To the node operator automatically','To the account tag you pass with -m','To the exchange'],1,'Correct. Use your own address.','Look at the -m flag.'),
+       Q('The official GPU miner targets which hardware?',['NVIDIA GPUs','Phones','Any CPU only'],0,'Right.','Check the requirements list.')]},
+{id:12,level:4,min:15,title:'Build with the Mesh API',sub:'Read blockchain data from your own apps',
+ obj:['Know what the Mesh API is','Run it against your node','Plan a simple integration'],
+ body:`<p>The <strong>Mochimo Mesh API</strong> is the official interface for reading and searching blockchain data. It is written in Go and designed to follow the <strong>Rosetta/Mesh</strong> standard used by many exchanges and wallets, so integrators can reuse familiar tooling. Wallets also use it to submit transactions.</p>
+<h2>How it fits together</h2>
+<ol class="steps"><li>Your Mochimo node keeps the ledger.</li><li>The Mesh server connects to the node and exposes HTTP endpoints.</li><li>Your app sends <strong>POST requests with JSON</strong> to those endpoints.</li><li>With the optional indexer and a MySQL‑compatible database, you can also search transactions and follow block events.</li></ol>
+<h2>Run it</h2>
+<pre># with a node already running
+./mesh -solo 0.0.0.0     # connect to your local node
+./mesh -p 8081           # custom port
+./mesh -cert cert.pem -key key.pem   # enable HTTPS</pre>
+<p>Full endpoint list, flags and query examples are in the <a href="https://github.com/NickP005/mochimo-mesh" rel="noopener">mochimo-mesh repository</a>.</p>
+<h2>Project ideas</h2>
+<ul><li>A balance checker for a list of your own addresses</li><li>A dashboard of block times and transaction counts</li><li>Payment confirmation for a small online shop</li></ul>
+<p>Remember that amounts come back in nanoMCM, so convert as in Lesson 6.</p>`,
+ quiz:[Q('Which standard does the Mesh API aim to follow?',['Rosetta/Mesh','ERC‑20','SWIFT'],0,'Correct.','It’s named after the standard.'),
+       Q('What do you need for transaction search?',['Nothing extra','The optional indexer with a database','A Google account'],1,'Right.','Search endpoints depend on the indexer.')]}
+];
+
+var EXAM=[
+ Q('Why is ECDSA at risk from quantum computers?',['Shor’s algorithm can derive private keys from public keys','Quantum computers mine faster','ECDSA is not open source'],0),
+ Q('What cryptography does Mochimo use for signatures?',['ECDSA','WOTS+ hash‑based signatures','RSA'],1),
+ Q('Why does the wallet rotate keys after every spend?',['Fees are lower','Each WOTS+ key must sign only once','Tags expire'],1),
+ Q('What keeps a Mochimo address stable while keys rotate?',['The tag','The block hash','The password'],0),
+ Q('How many nanoMCM are in 1 MCM?',['1,000','1,000,000','1,000,000,000'],2),
+ Q('Where should you install the Mochimo Wallet from?',['The official Chrome Web Store listing','A link in a DM','Any search ad'],0),
+ Q('Best practice before a large withdrawal?',['Send everything at once','Send a small test amount first','Share your phrase with support'],1),
+ Q('Who may ask for your recovery phrase?',['Official support','Mochimo developers','Nobody, ever'],2),
+ Q('What did Mochimo have instead of an ICO?',['Coins distributed through mining','A private presale','A bank loan'],0),
+ Q('What does ChainCollapse help with?',['Keeping node storage manageable','Faster exchange listings','Quantum‑proof passwords'],0)
+];
+var PASS=8;
+
+var GLOSSARY=[
+ ['Address','Where others send you MCM. Safe to share.',2],['Base58','Compact text encoding with a checksum used to display Mochimo addresses.',5],
+ ['Block','A batch of confirmed transactions.',1],['ChainCollapse','Mochimo’s method of compressing history so nodes need less storage.',6],
+ ['Change','The rest of your balance, moved to a fresh key after you send.',5],['Custodial','Coins held with someone else’s keys, such as an exchange.',2],
+ ['ECDSA','Signature scheme used by Bitcoin and Ethereum; vulnerable to Shor’s algorithm.',3],['Grover’s algorithm','Quantum search method that weakens, but does not break, strong hashes.',3],
+ ['Hash','A one‑way fingerprint of data.',4],['Harvest now, decrypt later','Collecting exposed public keys today to break them with future quantum computers.',3],
+ ['Ledger','The record of balances and payments.',1],['MCM','Mochimo’s coin ticker.',1],
+ ['Mesh API','Mochimo’s official Rosetta‑style API for reading chain data.',12],['Mining','Doing Proof of Work to add blocks and earn rewards.',1],
+ ['nanoMCM','Smallest unit: one billionth of an MCM.',6],['Node','A computer that stores the ledger, checks rules and relays data.',10],
+ ['Private key','The secret that authorises spending.',2],['Proof of Work','Consensus by solving computational puzzles.',1],
+ ['Recovery phrase','Words that rebuild all your keys. Never share it.',2],['Relay node','A node that verifies and forwards data without mining.',10],
+ ['Self‑custody','Holding your own keys and recovery phrase.',2],['Shor’s algorithm','Quantum algorithm that breaks ECDSA‑style cryptography.',3],
+ ['Tag','Permanent account identifier that stays the same while keys rotate.',5],['WOTS+','Winternitz One‑Time Signature Plus: Mochimo’s hash‑based signature.',4]
+];
+
+/* ---------- helpers ---------- */
+function lvl(id){return LEVELS.filter(function(l){return l.id===id})[0]}
+function lessonsOf(l){return LESSONS.filter(function(x){return x.level===l})}
+function doneCount(list){return (list||LESSONS).filter(function(x){return state.done[x.id]}).length}
+function allDone(){return doneCount()===LESSONS.length}
+function examPassed(){return state.exam&&state.exam.score>=PASS}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- social requirements for the certificate ---------- */
+var SOCIAL=[
+  {id:'x',      name:'X (Twitter)', action:'Follow @mochimocrypto',        url:'https://x.com/mochimocrypto',                 verify:'username', label:'Your X username',        ph:'@yourhandle'},
+  {id:'tg',     name:'Telegram',    action:'Join the Mochimo chat',        url:'https://t.me/mochimocryptochat',              verify:'username', label:'Your Telegram username', ph:'@yourhandle'},
+  {id:'dc',     name:'Discord',     action:'Join the Mochimo server',      url:'https://discord.mochimo.org/',                verify:'username', label:'Your Discord username',  ph:'yourhandle'},
+  {id:'tiktok', name:'TikTok',      action:'Follow @mochimoarmy',          url:'https://www.tiktok.com/@mochimoarmy',         verify:'check'},
+  {id:'ig',     name:'Instagram',   action:'Follow @mochimoquantum',       url:'https://www.instagram.com/mochimoquantum/',   verify:'check'},
+  {id:'yt',     name:'YouTube',     action:'Subscribe to @mochimoofficial',url:'https://www.youtube.com/@mochimoofficial',    verify:'check'},
+  {id:'ytedu',  name:'YouTube',     action:'Subscribe to @MochimoEducation',url:'https://www.youtube.com/@MochimoEducation', verify:'check'}
+];
+function socialVal(id){var v=state.social[id];return typeof v==='string'?v:(v?'':'')}
+function cleanHandle(v){return String(v||'').trim().replace(/^@+/,'').replace(/\s+/g,'')}
+function socialOk(it){
+  var v=state.social[it.id];
+  if(it.verify==='check')return v===true;
+  return cleanHandle(v).length>=3;
+}
+function socialDone(){return SOCIAL.every(socialOk)}
+function socialCount(){return SOCIAL.filter(socialOk).length}
+
+function viewSocial(){
+  app.innerHTML='<div class="panel"><h1 class="section-title">Before you claim your certificate</h1>'+
+    '<p class="section-sub">You passed the exam. One step left: join the Mochimo community on all channels below, then confirm each one. Your certificate unlocks when every item is confirmed.</p>'+
+    '<p class="note">Progress: <b id="socCount">'+socialCount()+'</b> of '+SOCIAL.length+' confirmed.</p>'+
+    '<ul class="social-list">'+SOCIAL.map(function(it){
+      var ok=socialOk(it);
+      return '<li class="social-item'+(ok?' ok':'')+'" data-id="'+it.id+'">'+
+        '<div class="social-head"><div><b>'+esc(it.name)+'</b><span>'+esc(it.action)+'</span></div>'+
+        '<a class="btn ghost" href="'+it.url+'" target="_blank" rel="noopener noreferrer">Open</a></div>'+
+        (it.verify==='username'
+          ? '<div class="social-verify"><label for="soc-'+it.id+'">'+esc(it.label)+'</label>'+
+            '<input class="field" id="soc-'+it.id+'" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="'+esc(it.ph)+'" value="'+esc(socialVal(it.id))+'"></div>'
+          : '<div class="social-verify"><label class="social-check"><input type="checkbox" id="soc-'+it.id+'"'+(ok?' checked':'')+'> I followed this account</label></div>')+
+        '</li>';
+    }).join('')+'</ul>'+
+    '<p class="note" id="socNote" aria-live="polite"></p>'+
+    '<a class="btn" id="socGo" href="#/certificate">Claim my certificate</a></div>';
+
+  var go=document.getElementById('socGo'),note=document.getElementById('socNote'),count=document.getElementById('socCount');
+  function refresh(){
+    SOCIAL.forEach(function(it){
+      var li=app.querySelector('.social-item[data-id="'+it.id+'"]');
+      if(li)li.classList.toggle('ok',socialOk(it));
+    });
+    count.textContent=socialCount();
+    var done=socialDone();
+    go.classList.toggle('disabled',!done);
+    go.setAttribute('aria-disabled',done?'false':'true');
+    note.textContent=done?'All set. Claim your certificate.':'Confirm every channel above to unlock the certificate.';
+  }
+  SOCIAL.forEach(function(it){
+    var el=document.getElementById('soc-'+it.id);
+    if(!el)return;
+    if(it.verify==='username'){
+      el.oninput=function(e){state.social[it.id]=cleanHandle(e.target.value);save();refresh()};
+    } else {
+      el.onchange=function(e){state.social[it.id]=!!e.target.checked;save();refresh()};
+    }
+  });
+  go.onclick=function(e){
+    if(!socialDone()){e.preventDefault();note.textContent='Confirm every channel above to unlock the certificate.';
+      var first=SOCIAL.filter(function(it){return !socialOk(it)})[0];
+      var el=first&&document.getElementById('soc-'+first.id);if(el)el.focus();}
+  };
+  refresh();
+}
+function updateRing(){
+  var total=LESSONS.length+1, n=doneCount()+(examPassed()?1:0), p=Math.round(n/total*100);
+  var r=document.getElementById('ring'); r.style.setProperty('--p',p);
+  document.getElementById('ringLabel').textContent=p+'% complete';
+}
+function nextLesson(){for(var i=0;i<LESSONS.length;i++){if(!state.done[LESSONS[i].id])return LESSONS[i]}return null}
+
+/* ---------- views ---------- */
+var app=document.getElementById('app');
+
+function viewHome(){
+  var nx=nextLesson();
+  var cta=nx?'<a class="btn" href="#/lesson/'+nx.id+'">'+(doneCount()?'Continue with Lesson '+nx.id:'Start Lesson 1')+'</a>':'<a class="btn" href="#/exam">Take the final exam</a>';
+  app.innerHTML=`
+  <section class="home-hero">
+    <div>
+      <img class="hero-logo" src="${LOGO}" alt="Mochimo logo">
+      <h1>Learn Mochimo, the blockchain built for the quantum era</h1>
+      <p>A free, structured curriculum that takes you from “what is crypto?” to holding MCM in a wallet only you control, with an optional track for node runners, miners and developers.</p>
+      <div class="btn-row">${cta}<a class="btn ghost" href="#/curriculum">See the curriculum</a></div>
+    </div>
+    <div class="hero-ladder" aria-hidden="true">
+      <p>A WOTS+ key is a ladder of hashes. You can always climb up, never down.</p>
+      <div class="hl-grid" id="heroGrid"></div>
+      <div class="hl-cap"><span>secret</span><span>public key</span></div>
+    </div>
+  </section>
+  <div class="facts">
+    <div><b>4 levels</b><span>Beginner to builder</span></div>
+    <div><b>12 lessons</b><span>About 2½ hours in total</span></div>
+    <div><b>3 interactive labs</b><span>Hashing, hash ladders, unit conversion</span></div>
+    <div><b>Certificate</b><span>Pass the final exam</span></div>
+  </div>
+  <h2 class="section-title">The learning path</h2>
+  <p class="section-sub">Each level builds on the one before. Levels 1 to 3 are everything most people need; Level 4 is for those who want to run infrastructure or build.</p>
+  ${levelsHTML()}`;
+  var g=document.getElementById('heroGrid');
+  for(var i=0;i<16;i++){var s=document.createElement('span');if(i===15)s.className='top';g.appendChild(s)}
+  var k=0, cells=g.children;
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var timer=setInterval(function(){
+      if(!document.getElementById('heroGrid')){clearInterval(timer);return}
+      for(var j=0;j<15;j++)cells[j].className=j<=k?'on':'';
+      k=(k+1)%16;
+    },350);
+  } else {for(var j=0;j<15;j++)cells[j].className='on'}
+}
+
+function levelsHTML(){
+  return '<div class="levels">'+LEVELS.map(function(L){
+    var ls=lessonsOf(L.id), d=doneCount(ls), mins=ls.reduce(function(a,b){return a+b.min},0);
+    return `<div class="level" style="--lc:${L.color}">
+      <div class="level-head"><p class="level-tag">Level ${L.id} · ${L.who}</p><h3>${L.name}</h3><p>${L.blurb}</p>
+      <div class="level-meta">${ls.length} lessons, about ${mins} min · ${d}/${ls.length} done</div><div class="level-bar"><i style="width:${d/ls.length*100}%"></i></div></div>
+      <ol class="level-lessons">${ls.map(function(x){return `<li><a href="#/lesson/${x.id}" class="${state.done[x.id]?'done':''}"><span class="lnum">${state.done[x.id]?'✓':x.id}</span><span class="ltitle"><b>${x.title}</b><span>${x.sub}</span></span><span class="lmin">${x.min} min</span></a></li>`}).join('')}</ol>
+    </div>`}).join('')+'</div>'+
+    `<div class="capstone"><div><h3>Final exam and certificate</h3><p>Ten questions across all levels. Score ${PASS} or more, then join the Mochimo community channels, to unlock your Mochimo Academy certificate.</p></div><a class="btn" href="#/exam">${examPassed()?'Review exam':'Go to the exam'}</a></div>`;
+}
+
+function viewCurriculum(){
+  app.innerHTML=`<div style="padding-top:2.5rem"><h1 class="section-title">Curriculum</h1><p class="section-sub">Twelve lessons in four levels. Complete a lesson by answering both of its questions correctly. Your progress is saved in this browser.</p>${levelsHTML()}</div>`;
+}
+
+function viewLesson(id){
+  var L=LESSONS.filter(function(x){return x.id===id})[0];
+  if(!L){return viewNotFound()}
+  var V=lvl(L.level), sib=lessonsOf(L.level);
+  var idx=LESSONS.indexOf(L), prev=LESSONS[idx-1], next=LESSONS[idx+1];
+  app.innerHTML=`<div class="lesson-layout" style="--lc:${V.color}">
+    <aside class="side"><a class="side-back" href="#/curriculum">‹ All levels</a><p class="level-tag">Level ${V.id}: ${V.name}</p>
+      <ol>${sib.map(function(x){return `<li><a href="#/lesson/${x.id}" class="${x.id===id?'current ':''}${state.done[x.id]?'done':''}"><span class="lnum">${state.done[x.id]?'✓':x.id}</span><span>${x.title}</span></a></li>`}).join('')}</ol></aside>
+    <div>
+      <article class="lesson">
+        <p class="crumb"><b>Level ${V.id}</b>, Lesson ${L.id} of ${LESSONS.length} · ${L.min} min</p>
+        <h1>${L.title}</h1>
+        <div class="objectives"><p>By the end of this lesson you can:</p><ul>${L.obj.map(function(o){return '<li>'+o+'</li>'}).join('')}</ul></div>
+        ${L.body}
+        <div class="quiz"><h2>Check your understanding</h2>
+          ${L.quiz.map(function(q,qi){return `<div class="q" data-qi="${qi}"><p>${q.q}</p><div class="opts">${q.opts.map(function(o,oi){return `<button type="button" data-oi="${oi}">${o}</button>`}).join('')}</div><p class="feedback" aria-live="polite"></p></div>`}).join('')}
+          <p class="complete-msg ${state.done[id]?'show':''}" id="cmsg">Lesson complete${next?'. On to the next one.':'. You have finished every lesson; the final exam is unlocked.'}</p>
+        </div>
+      </article>
+      <nav class="pager" aria-label="Lesson navigation">
+        ${prev?`<a class="prev" href="#/lesson/${prev.id}"><small>‹ Previous</small>${prev.title}</a>`:'<span></span>'}
+        ${next?`<a class="next" href="#/lesson/${next.id}"><small>Next ›</small>${next.title}</a>`:`<a class="next" href="#/exam"><small>Next ›</small>Final exam</a>`}
+      </nav>
+    </div></div>`;
+  var solved={};
+  app.querySelectorAll('.q').forEach(function(qEl){
+    var q=L.quiz[+qEl.dataset.qi], fb=qEl.querySelector('.feedback');
+    qEl.querySelectorAll('button').forEach(function(b){
+      b.onclick=function(){
+        qEl.querySelectorAll('button').forEach(function(x){x.classList.remove('right','wrong')});
+        if(+b.dataset.oi===q.a){b.classList.add('right');fb.textContent=q.ok;solved[qEl.dataset.qi]=1}
+        else{b.classList.add('wrong');fb.textContent=q.no}
+        if(Object.keys(solved).length===L.quiz.length&&!state.done[id]){
+          state.done[id]=true;save();updateRing();
+          document.getElementById('cmsg').classList.add('show');
+          var a=app.querySelector('.side a.current .lnum');if(a){a.textContent='✓';a.parentNode.classList.add('done')}
+        }
+      };
+    });
+  });
+  if(L.demo==='wots')initWots();
+  if(L.demo==='units')initUnits();
+  if(L.demo==='checklist')initChecklist();
+}
+
+function viewGlossary(){
+  app.innerHTML=`<div style="padding-top:2.5rem"><h1 class="section-title">Glossary</h1><p class="section-sub">Every key term from the curriculum, with a link to the lesson that explains it.</p>
+  <input class="field gloss-search" id="gq" type="search" placeholder="Search terms" aria-label="Search glossary">
+  <dl class="gloss" id="gl"></dl></div>`;
+  var gl=document.getElementById('gl');
+  function draw(f){
+    f=(f||'').toLowerCase();
+    var items=GLOSSARY.filter(function(g){return !f||g[0].toLowerCase().indexOf(f)>-1||g[1].toLowerCase().indexOf(f)>-1});
+    gl.innerHTML=items.length?items.map(function(g){return `<div><dt>${g[0]}</dt><dd>${g[1]} <a href="#/lesson/${g[2]}">Lesson ${g[2]}</a></dd></div>`}).join(''):'<p>No terms match. Try a shorter word.</p>';
+  }
+  document.getElementById('gq').oninput=function(e){draw(e.target.value)};
+  draw('');
+}
+
+function viewExam(){
+  var remaining=LESSONS.length-doneCount();
+  var intro=remaining?`<p class="locked">You have ${remaining} lesson${remaining>1?'s':''} left. You can take the exam now, but finishing the lessons first will help.</p>`:'';
+  app.innerHTML=`<div class="panel"><h1 class="section-title">Final exam</h1><p class="section-sub" style="margin-bottom:.5rem">Ten questions across all four levels. Choose one answer each, then submit. Pass mark: ${PASS} of 10.</p>${intro}
+  <div id="examQs">${EXAM.map(function(q,i){return `<div class="q" data-i="${i}"><p>${i+1}. ${q.q}</p><div class="opts">${q.opts.map(function(o,oi){return `<button type="button" data-oi="${oi}" aria-pressed="false">${o}</button>`}).join('')}</div></div>`}).join('')}</div>
+  <button class="btn" id="submitExam" type="button">Submit answers</button>
+  <div id="examResult" aria-live="polite"></div></div>`;
+  var picks={};
+  app.querySelectorAll('#examQs .q').forEach(function(qEl){
+    qEl.querySelectorAll('button').forEach(function(b){
+      b.onclick=function(){
+        qEl.querySelectorAll('button').forEach(function(x){x.classList.remove('right','wrong');x.setAttribute('aria-pressed','false');x.style.borderColor=''});
+        b.setAttribute('aria-pressed','true');b.style.borderColor='var(--violet)';picks[qEl.dataset.i]=+b.dataset.oi;
+      };
+    });
+  });
+  document.getElementById('submitExam').onclick=function(){
+    var res=document.getElementById('examResult');
+    if(Object.keys(picks).length<EXAM.length){res.innerHTML='<p class="feedback">Answer all 10 questions before submitting. '+(EXAM.length-Object.keys(picks).length)+' left.</p>';return}
+    var score=0;
+    app.querySelectorAll('#examQs .q').forEach(function(qEl){
+      var i=+qEl.dataset.i, btns=qEl.querySelectorAll('button');
+      btns.forEach(function(x){x.style.borderColor=''});
+      if(picks[i]===EXAM[i].a){score++;btns[picks[i]].classList.add('right')}
+      else{btns[picks[i]].classList.add('wrong');btns[EXAM[i].a].classList.add('right')}
+    });
+    if(!state.exam||score>state.exam.score){state.exam={score:score,date:new Date().toISOString().slice(0,10)};save();updateRing()}
+    res.innerHTML=`<p class="score">You scored ${score} of 10.</p>`+(score>=PASS?`<p>You passed. <a href="#/certificate">Claim your certificate</a>.</p>`:`<p>You need ${PASS} to pass. Green answers show the correct choices; review those lessons and try again.</p><button class="btn ghost" type="button" onclick="location.hash='#/exam';window.dispatchEvent(new HashChangeEvent('hashchange'))">Retake exam</button>`);
+  };
+}
+
+function viewCertificate(){
+  if(!examPassed()){
+    app.innerHTML=`<div class="panel"><h1 class="section-title">Certificate</h1><p class="section-sub">Pass the final exam with ${PASS} or more out of 10 to unlock your certificate.</p><p>Lessons complete: ${doneCount()} of ${LESSONS.length}. Best exam score: ${state.exam?state.exam.score+' of 10':'not taken yet'}.</p><p>You also need to join the Mochimo community channels. <a href="#/requirements">See the ${SOCIAL.length} requirements</a> (${socialCount()} of ${SOCIAL.length} confirmed).</p><a class="btn" href="#/exam">Go to the final exam</a></div>`;return;
+  }
+  if(!socialDone()){viewSocial();return;}
+  if(!state.exam.id){state.exam.id=makeId();save()}
+  app.innerHTML=`<div class="cert-page"><h1 class="section-title">Your certificate</h1>
+    <p class="section-sub">Type your name as it should appear, then download the certificate as an image to share.</p>
+    <p class="note">Community verified as <b>@${esc(cleanHandle(state.social.x))}</b> on X, <b>@${esc(cleanHandle(state.social.tg))}</b> on Telegram, <b>${esc(cleanHandle(state.social.dc))}</b> on Discord. <a href="#/requirements">Edit</a></p>
+    <div class="cert-controls"><div><label for="nm">Name on certificate</label><input class="field" id="nm" type="text" maxlength="40" value="${esc(state.name)}" placeholder="Your full name"></div>
+    <button class="btn" id="dlCert" type="button" hidden>Download PNG</button></div>
+    <p class="note" id="dlNote" aria-live="polite"></p>
+    <canvas id="certCanvas" width="2000" height="1414" role="img" aria-label="Mochimo Academy certificate of completion"></canvas></div>`;
+  var cv=document.getElementById('certCanvas');
+  function redraw(){drawCertificate(cv,{name:state.name,score:state.exam.score,date:state.exam.date,id:state.exam.id})}
+  var t;document.getElementById('nm').oninput=function(e){state.name=e.target.value;save();clearTimeout(t);t=setTimeout(redraw,120)};
+  Promise.all(['800 90px "Bricolage Grotesque"','700 40px "Bricolage Grotesque"','400 30px "Atkinson Hyperlegible"','700 30px "Atkinson Hyperlegible"'].map(function(f){return document.fonts?document.fonts.load(f).catch(function(){}):null})).then(redraw);
+  redraw();
+  var btn=document.getElementById('dlCert'),note=document.getElementById('dlNote');
+  var fileName=function(){return 'mochimo-academy-certificate'+(state.name?'-'+state.name.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'.png'};
+  if(!(window.claude&&claude.use)){
+    /* standalone hosting (e.g. GitHub Pages): plain browser download */
+    btn.hidden=false;
+    btn.onclick=function(){redraw();cv.toBlob(function(blob){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=fileName();document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},2000);note.textContent='Certificate downloaded.'},'image/png')};
+  } else {
+    claude.use('downloads').then(function(dl){
+      if(!dl)return;
+      btn.hidden=false;
+      btn.onclick=function(){
+        redraw();
+        cv.toBlob(function(blob){
+          var fn=fileName();
+          dl.save({filename:fn,data:blob}).then(function(){note.textContent='Certificate saved.'}).catch(function(e){
+            note.textContent=e&&e.code==='declined'?'Download cancelled.':e&&e.code==='rate_limited'?'A save prompt is already open. Finish that one first.':'Downloading is not available in this view. Right‑click the certificate and choose “Save image as”.';
+          });
+        },'image/png');
+      };
+    });
+  }
+}
+function makeId(){
+  var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r='';
+  var a=new Uint32Array(8);try{crypto.getRandomValues(a)}catch(e){for(var i=0;i<8;i++)a[i]=Math.random()*1e9}
+  for(var j=0;j<8;j++){r+=c[a[j]%c.length];if(j===3)r+='-'}
+  return 'MCMA-'+r;
+}
+var logoImg=null;
+function drawCertificate(cv,d){
+  var x=cv.getContext('2d'),W=cv.width,H=cv.height;
+  var DARK='#1D2B2E',MINT='#15DC97',WHITE='#F2F7F6',MUTED='#8FA5A8',LINE='#2F4145';
+  var DISP='"Bricolage Grotesque","Segoe UI",system-ui,sans-serif',BODY='"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif';
+  x.clearRect(0,0,W,H);
+  x.fillStyle=DARK;x.fillRect(0,0,W,H);
+  /* frame */
+  x.strokeStyle=MINT;x.lineWidth=3;x.strokeRect(56,56,W-112,H-112);
+  x.strokeStyle=LINE;x.lineWidth=1.5;x.strokeRect(74,74,W-148,H-148);
+  /* hash ladder motif, right side */
+  var cell=58,gap=12,lx=W-230,ly=150;
+  for(var i=0;i<16;i++){
+    var y=ly+i*(cell+gap)*0.97, top=i===0;
+    x.beginPath();x.roundRect?x.roundRect(lx,y,cell,cell,10):x.rect(lx,y,cell,cell);
+    if(top){x.fillStyle=MINT;x.fill()}
+    else{x.globalAlpha=0.08+0.5*(1-i/16);x.fillStyle=MINT;x.fill();x.globalAlpha=1}
+  }
+  x.fillStyle=MUTED;x.font='400 22px '+BODY;x.textAlign='center';
+  x.save();x.translate(lx+cell/2+62,ly+ (16*(cell+gap)*0.97)/2);x.rotate(Math.PI/2);
+  x.fillText('WOTS+ hash ladder: one key, one signature',0,0);x.restore();
+  x.textAlign='left';
+  /* header */
+  var L=150;
+  function drawLogo(){ if(logoImg&&logoImg.complete){x.save();x.beginPath();x.arc(L+70,210,70,0,Math.PI*2);x.clip();x.drawImage(logoImg,L,140,140,140);x.restore()} }
+  drawLogo();
+  x.fillStyle=WHITE;x.font='800 46px '+DISP;x.fillText('Mochimo Academy',L+170,202);
+  x.fillStyle=MUTED;x.font='400 26px '+BODY;x.fillText('Post‑quantum blockchain curriculum',L+170,244);
+  /* title */
+  x.fillStyle=MINT;x.font='700 40px '+DISP;x.fillText('Certificate of completion',L,420);
+  x.fillStyle=MUTED;x.font='400 30px '+BODY;x.fillText('Awarded to',L,500);
+  /* name, auto-fit */
+  var name=(d.name||'').trim()||'Your name',size=120,maxW=W-L-420;
+  x.font='800 '+size+'px '+DISP;
+  while(x.measureText(name).width>maxW&&size>54){size-=4;x.font='800 '+size+'px '+DISP}
+  x.fillStyle=d.name&&d.name.trim()?WHITE:'#4E6468';x.fillText(name,L,500+size*1.05);
+  var nb=500+size*1.05+34;
+  x.fillStyle=MINT;x.fillRect(L,nb,180,6);
+  /* statement */
+  x.fillStyle=WHITE;x.font='400 32px '+BODY;
+  var text='for completing all four levels of the Mochimo curriculum, from blockchain foundations and post‑quantum cryptography to self‑custody of MCM, and passing the final exam with a score of '+d.score+' out of 10.';
+  var words=text.split(' '),line='',ty=nb+80,maxT=W-L-440;
+  words.forEach(function(w){var t2=line?line+' '+w:w;if(x.measureText(t2).width>maxT){x.fillText(line,L,ty);line=w;ty+=48}else line=t2});
+  x.fillText(line,L,ty);
+  /* levels row */
+  var levels=['Foundations','Inside Mochimo','Own your MCM','Builder track'];
+  var ry=ty+95,rx=L;
+  x.font='700 24px '+BODY;
+  levels.forEach(function(n,i){
+    var label='Level '+(i+1)+'  '+n, w=x.measureText(label).width+86;
+    if(i===2||rx+w>W-400){rx=L;ry+=78}
+    x.strokeStyle=MINT;x.lineWidth=2;x.beginPath();x.roundRect?x.roundRect(rx,ry-38,w,58,29):x.rect(rx,ry-38,w,58);x.stroke();
+    x.fillStyle=MINT;x.beginPath();x.arc(rx+30,ry-9,13,0,Math.PI*2);x.fill();
+    x.strokeStyle=DARK;x.lineWidth=3.5;x.beginPath();x.moveTo(rx+23,ry-9);x.lineTo(rx+28,ry-3);x.lineTo(rx+38,ry-15);x.stroke();
+    x.fillStyle=WHITE;x.fillText(label,rx+56,ry);
+    rx+=w+18;
+  });
+  /* footer */
+  var fy=H-190;
+  x.fillStyle=LINE;x.fillRect(L,fy-70,W-L-420,1.5);
+  function col(cx,label,value){x.fillStyle=MUTED;x.font='400 22px '+BODY;x.fillText(label,cx,fy-20);x.fillStyle=WHITE;x.font='700 30px '+BODY;x.fillText(value,cx,fy+22)}
+  var dt=new Date(d.date+'T00:00:00'),ds=isNaN(dt)?d.date:dt.getDate()+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][dt.getMonth()]+' '+dt.getFullYear();
+  col(L,'Date issued',ds);
+  col(L+420,'Final exam',d.score+' / 10');
+  col(L+760,'Issued by','Mochimo Academy');
+  col(L+1160,'Certificate ID',d.id);
+  if(!logoImg){logoImg=new Image();logoImg.onload=function(){drawCertificate(cv,d)};logoImg.src=LOGO}
+}
+function viewNotFound(){app.innerHTML='<div class="panel"><h1 class="section-title">Page not found</h1><p>That page does not exist. Head back to the curriculum to pick a lesson.</p><a class="btn" href="#/curriculum">Open the curriculum</a></div>'}
+
+/* ---------- demos ---------- */
+function initWots(){
+  var hin=document.getElementById('hashIn'), hout=document.getElementById('hashOut');
+  function doHash(){
+    if(!(window.crypto&&crypto.subtle)){hout.textContent='Your browser does not support this demo.';return}
+    crypto.subtle.digest('SHA-256',new TextEncoder().encode(hin.value)).then(function(buf){
+      hout.textContent=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('')});
+  }
+  hin.oninput=doHash; doHash();
+  var lad=document.getElementById('ladder');
+  for(var i=0;i<16;i++){var r=document.createElement('div');r.className='rung';r.textContent=i;lad.appendChild(r)}
+  var d1=document.getElementById('d1'),d2=document.getElementById('d2'),re=document.getElementById('reuse'),v=document.getElementById('verdict');
+  function draw(){
+    var a=+d1.value,b=+d2.value,ru=re.checked,low=ru?Math.min(a,b):a;
+    document.getElementById('d1v').textContent=a;document.getElementById('d2v').textContent=b;d2.disabled=!ru;
+    lad.querySelectorAll('.rung').forEach(function(el,x){
+      el.className='rung';
+      if(x===15)el.classList.add('public');
+      else if(x>=a)el.classList.add('known');
+      else if(ru&&x>=low)el.classList.add('leak');
+      else if(x===0)el.classList.add('secret');
+    });
+    if(!ru){v.style.color='var(--green)';v.textContent='One signature: the attacker can only hash upward from rung '+a+'. The checksum blocks forgery, so the key is safe.'}
+    else if(b<a){v.style.color='var(--red)';v.textContent='Key reused: rungs '+b+' to '+(a-1)+' are now exposed. Combining both signatures makes forgery possible.'}
+    else{v.style.color='var(--amber)';v.textContent='Key reused: nothing new leaked on this rung, but across the many rungs of a real signature, reuse almost always exposes some. Never sign twice.'}
+  }
+  [d1,d2,re].forEach(function(el){el.oninput=draw;el.onchange=draw});draw();
+}
+function initUnits(){
+  var m=document.getElementById('uMcm'),n=document.getElementById('uNano');
+  function fromM(){var s=m.value.trim();if(!/^\d*\.?\d{0,9}$/.test(s)||s===''||s==='.'){n.value='';return}
+    var p=s.split('.'),w=p[0]||'0',f=(p[1]||'').padEnd(9,'0');n.value=(BigInt(w)*1000000000n+BigInt(f)).toString()}
+  function fromN(){var s=n.value.trim();if(!/^\d+$/.test(s)){m.value='';return}
+    var b=BigInt(s),w=b/1000000000n,f=(b%1000000000n).toString().padStart(9,'0').replace(/0+$/,'');m.value=w.toString()+(f?'.'+f:'')}
+  m.oninput=fromM;n.oninput=fromN;fromM();
+}
+function initChecklist(){
+  document.querySelectorAll('#checklist input').forEach(function(c,i){
+    c.checked=!!state.checks[i];c.onchange=function(){state.checks[i]=c.checked;save()};
+  });
+}
+
+/* ---------- router ---------- */
+function route(){
+  var h=location.hash.replace(/^#/,'')||'/', parts=h.split('/').filter(Boolean), key=parts[0]||'home';
+  document.querySelectorAll('[data-nav]').forEach(function(a){a.classList.toggle('active',a.dataset.nav===key||(key==='lesson'&&a.dataset.nav==='curriculum'))});
+  if(key==='home')viewHome();
+  else if(key==='curriculum')viewCurriculum();
+  else if(key==='lesson')viewLesson(parseInt(parts[1],10));
+  else if(key==='glossary')viewGlossary();
+  else if(key==='exam')viewExam();
+  else if(key==='certificate')viewCertificate();
+  else if(key==='requirements')viewSocial();
+  else viewNotFound();
+  window.scrollTo(0,0);
+  if(key!=='home')app.focus({preventScroll:true});
+}
+window.addEventListener('hashchange',route);
+updateRing();route();
+})();
+</script>
+</body>
+</html>
