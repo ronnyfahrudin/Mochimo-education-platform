@@ -68,4 +68,8 @@ assets/certificate-sample.png  example certificate
 - Exchange listings change, so the course points learners to live market pages instead of naming an exchange.
 - Always verify links through [mochimo.org](https://mochimo.org).
 
+## License
+
+[MIT](LICENSE) — the Mochimo name and logo belong to the Mochimo project.
+
 Educational material only, not financial advice.
